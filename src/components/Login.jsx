@@ -7,7 +7,7 @@ const {isAuth, toggleAuth}=useContext(AuthContext)
   const [password, setPassword] = useState("");
   async function getData(username,pass) {
     axios
-      .get(http://localhost:8080/users/?username=${username}&&pass=${pass})
+      .get(`http://localhost:8080/users/?username=${username}&&pass=${pass}`)
       .then(function (response) {
         let userdetails = response.data[0];
         console.log(userdetails);
