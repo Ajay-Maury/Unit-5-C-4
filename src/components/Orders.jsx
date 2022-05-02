@@ -1,6 +1,23 @@
+import { useEffect, useState } from "react";
+
 export const Orders = () => {
   //  Get all data when admin logs in and populate it
   // store it in redux
+const [data,setData] = useState([])
+
+   useEffect(() => {
+    getdata();
+
+    return function cleanup() {};
+  }, []);
+
+  async function getdata() {
+    const data = await fetch(`http://localhost:8080/orders`).then((d) =>
+      d.json()
+    );
+    setData(data);
+    // console.log(data);
+  }
 
   return (
     <div>
@@ -25,12 +42,13 @@ export const Orders = () => {
             </tr>
           </thead>
           <tbody>
+           { data.map((e)=>(
             <tr className="orders-row">
-              <td className="id"></td>
-              <td className="problem"></td>
-              <td className="owner"></td>
-              <td className="status"></td>
-              <td className="cost"></td>
+              <td className="id">{e.id}</td>
+              <td className="problem">{e.problem}</td>
+              <td className="owner">{e.owner_name}</td>
+              <td className="status">{e.status}</td>
+              <td className="cost">{e.cost}</td>
               <td className="change-status">
                 {/* Show select dropdown only if status is Not Accepted */}
                 <select className="changeStatus" name="changeStatus">
@@ -46,6 +64,7 @@ export const Orders = () => {
                 <button>Accept</button>
               </td>
             </tr>
+            ))}
           </tbody>
         </table>
       </div>

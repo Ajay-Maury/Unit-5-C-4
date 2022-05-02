@@ -1,50 +1,45 @@
-import { useContext, useEffect, useState } from "react";
-// import { AuthContext, } from "../context/AuthContext";
+import { useContext, useState} from "react";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import {AuthContext} from "../context/AuthContext"
 export const Login = () => {
-// const {isAuth, toggleAuth}=useContext(AuthContext )
-  const [search, setSearch] = useState("");
+
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("")
-
-  let Navigate = useNavigate();
-  
-  // useEffect(() => {
-  //  
-  // }, [getData(search, password)]);
-
+  const navigate=useNavigate();
+  const { handleAuth } = useContext(AuthContext);
   async function getData(username,pass) {
     axios
       .get(`http://localhost:8080/users/?username=${username}&&pass=${pass}`)
       .then(function (response) {
         let userdetails = response.data[0];
-        if (userdetails === undefined)
-          alert("please check the credentails")
         console.log(userdetails);
-        setRole(userdetails.role);
-        console.log(role)
-         if (role === "admin") {
-      Navigate(`/orders`);
-    } else if (role === "client") {
-      Navigate("/neworder");
-    }
-      })
+        if (userdetails === undefined){
+          alert("please check the credentails")
+          
+        }
+          else if(userdetails.role=="admin"){
+            handleAuth(true)
+          
+          (navigate("/orders",{replace:true}))}
+          else{
+            handleAuth(true)
+          (navigate("/neworder",{replace:true}))}
+      }
+       )
       .catch(function (error) {
         // handle error
         console.log(error);
       })
       .then(function () {
         // always executed
-        // console.log(userdetails)
-        // console.log(role)
       });
   }
   return (
     <div>
       <input
         onChange={(e) => {
-          setSearch(e.target.value);
+          setName(e.target.value);
         }}
         className="username"
         type="text"
@@ -64,7 +59,7 @@ export const Login = () => {
       {/* get his role, if role is admin take him to /orders page otherwise take him to /neworder */}
       <button
         onClick={() => {
-          getData(search, password);
+          getData(name, password);
         }}
         className="submit"
       >

@@ -4,8 +4,11 @@ import { Login } from "./Login"
 export const Nav = () => {
     return (
       <>
+        <Link to={"/"}>
+          <strong>Home</strong>
+        </Link>
         <Link to={"/login"}>
-          <strong>Home Login</strong>
+          <strong> Login</strong>
         </Link>
       </>
     );
